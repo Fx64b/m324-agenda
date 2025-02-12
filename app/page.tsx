@@ -1,9 +1,5 @@
-import {Button} from "@/components/ui/button";
+import { redirect } from 'next/navigation'
 
 export default function Home() {
-  return (
-    <div className="w-screen h-screen bg-black flex justify-center items-center font-[family-name:var(--font-geist-sans)]">
-      <Button>Button</Button>
-    </div>
-  );
+    redirect('/agenda')
 }
