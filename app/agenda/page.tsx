@@ -1,24 +1,42 @@
 'use client'
 
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import {Calendar, CalendarDays, CheckCircle2, Circle, PlusCircle, Trash2} from 'lucide-react'
+import { useTasks } from '@/hook/useTasks'
 import { type Task } from '@/lib/types'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DatePicker } from '@/components/ui/date-picker'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+    Calendar,
+    CalendarDays,
+    CheckCircle2,
+    Circle,
+    PlusCircle,
+    Trash2,
+} from 'lucide-react'
+
+import { useState } from 'react'
+
+import Link from 'next/link'
+
 import { Badge } from '@/components/ui/badge'
-import {useTasks} from "@/hook/useTasks";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DatePicker } from '@/components/ui/date-picker'
+import { Input } from '@/components/ui/input'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function AgendaPage() {
     const { tasks, setTasks } = useTasks()
     const [newTask, setNewTask] = useState('')
     const [description, setDescription] = useState('')
-    const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
+    const [priority, setPriority] = useState<'low' | 'medium' | 'high'>(
+        'medium'
+    )
     const [dueDate, setDueDate] = useState<Date | undefined>()
     const [filter, setFilter] = useState('all')
 
@@ -33,10 +51,10 @@ export default function AgendaPage() {
             dueDate,
             createdAt: new Date(),
             completed: false,
-            priority
+            priority,
         }
 
-        setTasks(prev => [task, ...prev])
+        setTasks((prev) => [task, ...prev])
         setNewTask('')
         setDescription('')
         setPriority('medium')
@@ -44,8 +62,8 @@ export default function AgendaPage() {
     }
 
     const toggleTaskCompletion = (taskId: string) => {
-        setTasks(prev =>
-            prev.map(task =>
+        setTasks((prev) =>
+            prev.map((task) =>
                 task.id === taskId
                     ? { ...task, completed: !task.completed }
                     : task
@@ -54,7 +72,7 @@ export default function AgendaPage() {
     }
 
     const deleteTask = (taskId: string) => {
-        setTasks(prev => prev.filter(task => task.id !== taskId))
+        setTasks((prev) => prev.filter((task) => task.id !== taskId))
     }
 
     const getPriorityColor = (priority: string) => {
@@ -70,10 +88,11 @@ export default function AgendaPage() {
         }
     }
 
-    const filteredTasks = tasks.filter(task => {
+    const filteredTasks = tasks.filter((task) => {
         if (filter === 'completed') return task.completed
         if (filter === 'active') return !task.completed
-        if (filter === 'high') return task.priority === 'high' && !task.completed
+        if (filter === 'high')
+            return task.priority === 'high' && !task.completed
         if (filter === 'due-soon') {
             if (!task.dueDate || task.completed) return false
             const today = new Date()
@@ -86,24 +105,24 @@ export default function AgendaPage() {
     })
 
     return (
-        <div className="container mx-auto p-4 max-w-2xl">
+        <div className="container mx-auto max-w-2xl p-4">
             <Card>
                 <CardHeader>
                     <div className={'flex w-full items-center justify-between'}>
-                    <CardTitle>Agenda</CardTitle>
+                        <CardTitle>Agenda</CardTitle>
                         <Link href={'/calendar'}>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            aria-label="Next month"
-                        >
-                        <CalendarDays />
-                        </Button>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                aria-label="Next month"
+                            >
+                                <CalendarDays />
+                            </Button>
                         </Link>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleAddTask} className="space-y-4 mb-6">
+                    <form onSubmit={handleAddTask} className="mb-6 space-y-4">
                         <Input
                             value={newTask}
                             onChange={(e) => setNewTask(e.target.value)}
@@ -116,13 +135,20 @@ export default function AgendaPage() {
                             placeholder="Description (optional)"
                         />
                         <div className="flex gap-4">
-                            <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
+                            <Select
+                                value={priority}
+                                onValueChange={(
+                                    value: 'low' | 'medium' | 'high'
+                                ) => setPriority(value)}
+                            >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Priority" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="low">Low</SelectItem>
-                                    <SelectItem value="medium">Medium</SelectItem>
+                                    <SelectItem value="medium">
+                                        Medium
+                                    </SelectItem>
                                     <SelectItem value="high">High</SelectItem>
                                 </SelectContent>
                             </Select>
@@ -134,31 +160,56 @@ export default function AgendaPage() {
                         </div>
                     </form>
 
-                    <Tabs defaultValue="all" className="w-full" onValueChange={setFilter}>
-                        <TabsList className="grid grid-cols-5 w-full">
+                    <Tabs
+                        defaultValue="all"
+                        className="w-full"
+                        onValueChange={setFilter}
+                    >
+                        <TabsList className="grid w-full grid-cols-5">
                             <TabsTrigger value="all">All</TabsTrigger>
                             <TabsTrigger value="active">Active</TabsTrigger>
-                            <TabsTrigger value="completed">Completed</TabsTrigger>
-                            <TabsTrigger value="high">High Priority</TabsTrigger>
+                            <TabsTrigger value="completed">
+                                Completed
+                            </TabsTrigger>
+                            <TabsTrigger value="high">
+                                High Priority
+                            </TabsTrigger>
                             <TabsTrigger value="due-soon">Due Soon</TabsTrigger>
                         </TabsList>
                     </Tabs>
 
                     <div className="mt-4 space-y-2">
-                        {filteredTasks.map(task => (
-                            <Card key={task.id} className={task.completed ? 'opacity-60' : ''}>
+                        {filteredTasks.map((task) => (
+                            <Card
+                                key={task.id}
+                                className={task.completed ? 'opacity-60' : ''}
+                            >
                                 <CardContent className="p-4">
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-start gap-3">
                                             <button
-                                                onClick={() => toggleTaskCompletion(task.id)}
-                                                className="text-primary hover:text-primary/80 mt-1"
+                                                onClick={() =>
+                                                    toggleTaskCompletion(
+                                                        task.id
+                                                    )
+                                                }
+                                                className="mt-1 text-primary hover:text-primary/80"
                                                 aria-label="Toggle task completion"
                                             >
-                                                {task.completed ? <CheckCircle2 /> : <Circle />}
+                                                {task.completed ? (
+                                                    <CheckCircle2 />
+                                                ) : (
+                                                    <Circle />
+                                                )}
                                             </button>
                                             <div className="space-y-1">
-                                                <span className={task.completed ? 'line-through' : ''}>
+                                                <span
+                                                    className={
+                                                        task.completed
+                                                            ? 'line-through'
+                                                            : ''
+                                                    }
+                                                >
                                                     {task.title}
                                                 </span>
                                                 {task.description && (
@@ -167,13 +218,20 @@ export default function AgendaPage() {
                                                     </p>
                                                 )}
                                                 <div className="flex gap-2">
-                                                    <Badge variant="outline" className={getPriorityColor(task.priority)}>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={getPriorityColor(
+                                                            task.priority
+                                                        )}
+                                                    >
                                                         {task.priority}
                                                     </Badge>
                                                     {task.dueDate && (
                                                         <Badge variant="outline">
                                                             <Calendar className="mr-1 h-3 w-3" />
-                                                            {new Date(task.dueDate).toLocaleDateString()}
+                                                            {new Date(
+                                                                task.dueDate
+                                                            ).toLocaleDateString()}
                                                         </Badge>
                                                     )}
                                                 </div>
@@ -183,10 +241,10 @@ export default function AgendaPage() {
                                             variant="ghost"
                                             size="icon"
                                             onClick={() => deleteTask(task.id)}
-                                            className="text-destructive hover:text-destructive/90 hover:bg-destructive/10 transition-colors"
+                                            className="text-destructive transition-colors hover:bg-destructive/10 hover:text-destructive/90"
                                             aria-label="Delete task"
                                         >
-                                            <Trash2 className={'!w-6 !h-6'} />
+                                            <Trash2 className={'!h-6 !w-6'} />
                                         </Button>
                                     </div>
                                 </CardContent>

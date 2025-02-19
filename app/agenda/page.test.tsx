@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it } from 'vitest'
+
 import AgendaPage from './page'
 
 // Mock localStorage
@@ -12,12 +13,12 @@ const localStorageMock = (() => {
         },
         clear: () => {
             store = {}
-        }
+        },
     }
 })()
 
 Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock
+    value: localStorageMock,
 })
 
 describe('AgendaPage', () => {
@@ -42,11 +43,17 @@ describe('AgendaPage', () => {
             render(<AgendaPage />)
 
             const titleInput = screen.getByPlaceholderText('Task title...')
-            const descriptionInput = screen.getByPlaceholderText('Description (optional)')
+            const descriptionInput = screen.getByPlaceholderText(
+                'Description (optional)'
+            )
             const priorityTrigger = screen.getByRole('combobox')
 
-            fireEvent.change(titleInput, { target: { value: 'Important Task' } })
-            fireEvent.change(descriptionInput, { target: { value: 'Must be done ASAP' } })
+            fireEvent.change(titleInput, {
+                target: { value: 'Important Task' },
+            })
+            fireEvent.change(descriptionInput, {
+                target: { value: 'Must be done ASAP' },
+            })
             fireEvent.click(priorityTrigger)
             fireEvent.click(screen.getByRole('option', { name: 'High' }))
 
@@ -76,17 +83,25 @@ describe('AgendaPage', () => {
 
             // Add a task
             const titleInput = screen.getByPlaceholderText('Task title...')
-            fireEvent.change(titleInput, { target: { value: 'Toggle Test Task' } })
+            fireEvent.change(titleInput, {
+                target: { value: 'Toggle Test Task' },
+            })
             fireEvent.click(screen.getByRole('button', { name: /add/i }))
 
             // Find and click the toggle button using aria-label
-            const toggleButton = screen.getByRole('button', { name: /toggle task completion/i })
+            const toggleButton = screen.getByRole('button', {
+                name: /toggle task completion/i,
+            })
 
             fireEvent.click(toggleButton)
-            expect(screen.getByText('Toggle Test Task')).toHaveClass('line-through')
+            expect(screen.getByText('Toggle Test Task')).toHaveClass(
+                'line-through'
+            )
 
             fireEvent.click(toggleButton)
-            expect(screen.getByText('Toggle Test Task')).not.toHaveClass('line-through')
+            expect(screen.getByText('Toggle Test Task')).not.toHaveClass(
+                'line-through'
+            )
         })
 
         it('deletes a task', () => {
@@ -94,11 +109,15 @@ describe('AgendaPage', () => {
 
             // Add a task
             const titleInput = screen.getByPlaceholderText('Task title...')
-            fireEvent.change(titleInput, { target: { value: 'Task to Delete' } })
+            fireEvent.change(titleInput, {
+                target: { value: 'Task to Delete' },
+            })
             fireEvent.click(screen.getByRole('button', { name: /add/i }))
 
             // Find and click delete button using aria-label
-            const deleteButton = screen.getByRole('button', { name: /delete task/i })
+            const deleteButton = screen.getByRole('button', {
+                name: /delete task/i,
+            })
 
             fireEvent.click(deleteButton)
             expect(screen.queryByText('Task to Delete')).not.toBeInTheDocument()
@@ -111,11 +130,15 @@ describe('AgendaPage', () => {
 
             // Add a task
             const titleInput = screen.getByPlaceholderText('Task title...')
-            fireEvent.change(titleInput, { target: { value: 'Completed Task' } })
+            fireEvent.change(titleInput, {
+                target: { value: 'Completed Task' },
+            })
             fireEvent.click(screen.getByRole('button', { name: /add/i }))
 
             // Complete the task
-            const toggleButton = screen.getByRole('button', { name: /toggle task completion/i })
+            const toggleButton = screen.getByRole('button', {
+                name: /toggle task completion/i,
+            })
             fireEvent.click(toggleButton)
 
             // Switch to completed filter

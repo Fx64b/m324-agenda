@@ -1,6 +1,7 @@
 # Modul 342 Agenda App
 
 A basic agend app for the school [Module 342](https://www.modulbaukasten.ch/module/324/1/de-DE?title=DevOps-Prozesse-mit-Tools-unterst%C3%BCtzen).
+
 ## Features
 
 - Create, update, and delete tasks
@@ -36,17 +37,20 @@ A basic agend app for the school [Module 342](https://www.modulbaukasten.ch/modu
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/Fx64b/m324-agenda.git
 cd m324-agenda
 ```
 
 2. Install dependencies
+
 ```bash
 pnpm install
 ```
 
 3. Run the development server:
+
 ```bash
 pnpm dev
 ```
@@ -65,17 +69,21 @@ pnpm test:watch  # Run tests in watch mode
 ```
 
 ### Testing
+
 The project uses Vitest and React Testing Library for testing. Tests can be found in files with the .test.tsx extension.
 To run tests:
+
 ```bash
 pnpm test
 ```
 
 ### Deployment
+
 The project is configured for deployment on Vercel or GitHub Pages. The main branch is automatically deployed through GitHub Actions.
 Contributing
 
 ### Fork the repository
+
 - Create your feature branch (git checkout -b feature/amazing-feature)
 - Commit your changes using conventional commits
 - Push to the branch (git push origin feature/amazing-feature)

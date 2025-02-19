@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
 import { type Task } from '@/lib/types'
+
+import { useEffect, useState } from 'react'
 
 export function useTasks() {
     const [tasks, setTasks] = useState<Task[]>(() => {
@@ -9,7 +10,7 @@ export function useTasks() {
                 return JSON.parse(storedTasks).map((task: any) => ({
                     ...task,
                     dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
-                    createdAt: new Date(task.createdAt)
+                    createdAt: new Date(task.createdAt),
                 }))
             }
         }
@@ -24,6 +25,6 @@ export function useTasks() {
 
     return {
         tasks,
-        setTasks
+        setTasks,
     }
 }

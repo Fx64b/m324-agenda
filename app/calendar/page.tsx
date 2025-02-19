@@ -1,23 +1,39 @@
 // app/calendar/page.tsx
 'use client'
 
-import { useState, useMemo } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useTasks } from '@/hook/useTasks'
+import {
+    addMonths,
+    eachDayOfInterval,
+    endOfMonth,
+    endOfWeek,
+    format,
+    isSameMonth,
+    startOfMonth,
+    startOfWeek,
+    subMonths,
+} from 'date-fns'
+import { ChevronLeft, ChevronRight, ListTodo } from 'lucide-react'
+
+import { useMemo, useState } from 'react'
+
+import Link from 'next/link'
+
 import { Badge } from '@/components/ui/badge'
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, isSameMonth, startOfWeek, endOfWeek, addMonths, subMonths } from 'date-fns'
-import {ChevronLeft, ChevronRight, ListTodo} from 'lucide-react'
-import {useTasks} from "@/hook/useTasks";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+// app/calendar/page.tsx
 
 export default function CalendarPage() {
     const { tasks } = useTasks()
     const [currentDate, setCurrentDate] = useState(new Date())
 
-
     const navigateMonth = (direction: 'forward' | 'back') => {
-        setCurrentDate(current =>
-            direction === 'forward' ? addMonths(current, 1) : subMonths(current, 1)
+        setCurrentDate((current) =>
+            direction === 'forward'
+                ? addMonths(current, 1)
+                : subMonths(current, 1)
         )
     }
 
@@ -31,7 +47,7 @@ export default function CalendarPage() {
     }, [currentDate])
 
     const getTasksForDate = (date: Date) => {
-        const dayTasks = tasks.filter(task => {
+        const dayTasks = tasks.filter((task) => {
             if (!task.dueDate) return false
             const taskDate = new Date(task.dueDate)
             return (
@@ -61,7 +77,7 @@ export default function CalendarPage() {
     }
 
     return (
-        <div className="container mx-auto p-4 max-w-7xl">
+        <div className="container mx-auto max-w-7xl p-4">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
                     <CardTitle>{format(currentDate, 'MMMM yyyy')}</CardTitle>
@@ -83,26 +99,28 @@ export default function CalendarPage() {
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                         <Link href={'/agenda'}>
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            aria-label="Go to agenda view"
-                        >
-                        <ListTodo />
-                        </Button>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                aria-label="Go to agenda view"
+                            >
+                                <ListTodo />
+                            </Button>
                         </Link>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-7 gap-px mb-px">
-                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                            <div
-                                key={day}
-                                className="h-12 flex items-center justify-center bg-muted font-medium"
-                            >
-                                {day}
-                            </div>
-                        ))}
+                    <div className="mb-px grid grid-cols-7 gap-px">
+                        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
+                            (day) => (
+                                <div
+                                    key={day}
+                                    className="flex h-12 items-center justify-center bg-muted font-medium"
+                                >
+                                    {day}
+                                </div>
+                            )
+                        )}
                     </div>
 
                     <div className="grid grid-cols-7 gap-px bg-muted">
@@ -114,22 +132,24 @@ export default function CalendarPage() {
                                 <div
                                     key={index}
                                     data-testid="day-cell"
-                                    className={`min-h-[150px] p-2 bg-background ${
+                                    className={`min-h-[150px] bg-background p-2 ${
                                         !isCurrentMonth ? 'opacity-50' : ''
                                     }`}
                                 >
-                                    <div className="font-medium mb-2">
+                                    <div className="mb-2 font-medium">
                                         {format(day, 'd')}
                                     </div>
-                                    <div className="space-y-1 overflow-y-auto max-h-[100px]">
-                                        {dayTasks.map(task => (
+                                    <div className="max-h-[100px] space-y-1 overflow-y-auto">
+                                        {dayTasks.map((task) => (
                                             <Badge
                                                 key={task.id}
                                                 variant="outline"
-                                                className={`w-full truncate justify-start text-xs ${
-                                                    getPriorityColor(task.priority)
-                                                } ${
-                                                    task.completed ? 'line-through opacity-50' : ''
+                                                className={`w-full justify-start truncate text-xs ${getPriorityColor(
+                                                    task.priority
+                                                )} ${
+                                                    task.completed
+                                                        ? 'line-through opacity-50'
+                                                        : ''
                                                 }`}
                                             >
                                                 {task.title}

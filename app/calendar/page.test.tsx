@@ -1,7 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { addMonths, format, subMonths } from 'date-fns'
+import { beforeEach, describe, expect, it } from 'vitest'
+
 import CalendarPage from './page'
-import { format, addMonths, subMonths } from 'date-fns'
 
 const localStorageMock = (() => {
     let store: { [key: string]: string } = {}
@@ -12,12 +13,12 @@ const localStorageMock = (() => {
         },
         clear: () => {
             store = {}
-        }
+        },
     }
 })()
 
 Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock
+    value: localStorageMock,
 })
 
 describe('CalendarPage', () => {
@@ -39,9 +40,12 @@ describe('CalendarPage', () => {
             const nextMonth = format(addMonths(currentDate, 1), 'MMMM yyyy')
 
             // Use getAllByRole and find the one with the right icon
-            const buttons = screen.getAllByRole('button', { name: /next month/i })
-            const nextButton = buttons.find(button =>
-                button.querySelector('.lucide-chevron-right'))
+            const buttons = screen.getAllByRole('button', {
+                name: /next month/i,
+            })
+            const nextButton = buttons.find((button) =>
+                button.querySelector('.lucide-chevron-right')
+            )
 
             if (!nextButton) throw new Error('Next button not found')
 
@@ -54,7 +58,9 @@ describe('CalendarPage', () => {
             const currentDate = new Date()
             const previousMonth = format(subMonths(currentDate, 1), 'MMMM yyyy')
 
-            fireEvent.click(screen.getByRole('button', { name: /previous month/i }))
+            fireEvent.click(
+                screen.getByRole('button', { name: /previous month/i })
+            )
             expect(screen.getByText(previousMonth)).toBeInTheDocument()
         })
     })
@@ -68,7 +74,7 @@ describe('CalendarPage', () => {
                 dueDate: new Date().toISOString(),
                 createdAt: new Date().toISOString(),
                 completed: false,
-                priority: 'high'
+                priority: 'high',
             }
             localStorageMock.setItem('tasks', JSON.stringify([task]))
 
@@ -83,7 +89,7 @@ describe('CalendarPage', () => {
                 dueDate: new Date().toISOString(),
                 createdAt: new Date().toISOString(),
                 completed: false,
-                priority: 'high'
+                priority: 'high',
             }
             localStorageMock.setItem('tasks', JSON.stringify([task]))
 
@@ -99,7 +105,7 @@ describe('CalendarPage', () => {
                 dueDate: new Date().toISOString(),
                 createdAt: new Date().toISOString(),
                 completed: true,
-                priority: 'medium'
+                priority: 'medium',
             }
             localStorageMock.setItem('tasks', JSON.stringify([task]))
 
@@ -113,7 +119,7 @@ describe('CalendarPage', () => {
         it('displays all days of the week', () => {
             render(<CalendarPage />)
             const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-            weekdays.forEach(day => {
+            weekdays.forEach((day) => {
                 expect(screen.getByText(day)).toBeInTheDocument()
             })
         })
