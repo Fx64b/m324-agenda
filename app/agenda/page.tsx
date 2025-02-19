@@ -4,16 +4,18 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Calendar, CheckCircle2, Circle, PlusCircle, Trash2 } from 'lucide-react'
+import {Calendar, CalendarDays, CheckCircle2, Circle, PlusCircle, Trash2} from 'lucide-react'
 import { type Task } from '@/lib/types'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { DatePicker } from '@/components/ui/date-picker'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
+import {useTasks} from "@/hook/useTasks";
+import Link from "next/link";
 
 export default function AgendaPage() {
-    const [tasks, setTasks] = useState<Task[]>([])
+    const { tasks, setTasks } = useTasks()
     const [newTask, setNewTask] = useState('')
     const [description, setDescription] = useState('')
     const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
@@ -87,7 +89,18 @@ export default function AgendaPage() {
         <div className="container mx-auto p-4 max-w-2xl">
             <Card>
                 <CardHeader>
+                    <div className={'flex w-full items-center justify-between'}>
                     <CardTitle>Agenda</CardTitle>
+                        <Link href={'/calendar'}>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            aria-label="Next month"
+                        >
+                        <CalendarDays />
+                        </Button>
+                        </Link>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleAddTask} className="space-y-4 mb-6">
