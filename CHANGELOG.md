@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Fx64b/m324-agenda/compare/v1.4.0...v1.5.0) (2025-02-19)
+
+
+### Features
+
+* add calendar view and persist task ([d87bab7](https://github.com/Fx64b/m324-agenda/commit/d87bab71600b04777a8caff9039fae71956e0b76))
+
 # [1.4.0](https://github.com/Fx64b/m324-agenda/compare/v1.3.2...v1.4.0) (2025-02-19)
 
 
