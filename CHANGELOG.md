@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Fx64b/m324-agenda/compare/v1.3.0...v1.3.1) (2025-02-19)
+
+
+### Bug Fixes
+
+* **agenda:** remove unused import ([43f6a96](https://github.com/Fx64b/m324-agenda/commit/43f6a9660c5992dcaa3adb64a24d0f416b831ce0))
+
 # [1.3.0](https://github.com/Fx64b/m324-agenda/compare/v1.2.0...v1.3.0) (2025-02-19)
 
 
