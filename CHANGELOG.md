@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Fx64b/m324-agenda/compare/v1.3.2...v1.4.0) (2025-02-19)
+
+
+### Features
+
+* **ui:** add new shadcn components ([2b5d825](https://github.com/Fx64b/m324-agenda/commit/2b5d8257a1b3a5b401c1016dfce6fbcc27e39230))
+
 ## [1.3.2](https://github.com/Fx64b/m324-agenda/compare/v1.3.1...v1.3.2) (2025-02-19)
 
 
