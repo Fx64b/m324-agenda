@@ -4,11 +4,21 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Calendar, CheckCircle2, Circle, Clock, PlusCircle, Trash2 } from 'lucide-react'
 import { type Task } from '@/lib/types'
+import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { DatePicker } from '@/components/ui/date-picker'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
 
 export default function AgendaPage() {
     const [tasks, setTasks] = useState<Task[]>([])
     const [newTask, setNewTask] = useState('')
+    const [description, setDescription] = useState('')
+    const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
+    const [dueDate, setDueDate] = useState<Date | undefined>()
+    const [filter, setFilter] = useState('all')
 
     const handleAddTask = (e: React.FormEvent) => {
         e.preventDefault()
@@ -17,13 +27,61 @@ export default function AgendaPage() {
         const task: Task = {
             id: crypto.randomUUID(),
             title: newTask.trim(),
+            description: description.trim() || undefined,
+            dueDate,
             createdAt: new Date(),
-            completed: false
+            completed: false,
+            priority
         }
 
         setTasks(prev => [task, ...prev])
         setNewTask('')
+        setDescription('')
+        setPriority('medium')
+        setDueDate(undefined)
     }
+
+    const toggleTaskCompletion = (taskId: string) => {
+        setTasks(prev =>
+            prev.map(task =>
+                task.id === taskId
+                    ? { ...task, completed: !task.completed }
+                    : task
+            )
+        )
+    }
+
+    const deleteTask = (taskId: string) => {
+        setTasks(prev => prev.filter(task => task.id !== taskId))
+    }
+
+    const getPriorityColor = (priority: string) => {
+        switch (priority) {
+            case 'high':
+                return 'text-red-500'
+            case 'medium':
+                return 'text-yellow-500'
+            case 'low':
+                return 'text-green-500'
+            default:
+                return ''
+        }
+    }
+
+    const filteredTasks = tasks.filter(task => {
+        if (filter === 'completed') return task.completed
+        if (filter === 'active') return !task.completed
+        if (filter === 'high') return task.priority === 'high' && !task.completed
+        if (filter === 'due-soon') {
+            if (!task.dueDate || task.completed) return false
+            const today = new Date()
+            const dueDate = new Date(task.dueDate)
+            const diffTime = dueDate.getTime() - today.getTime()
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+            return diffDays <= 3 && diffDays >= 0
+        }
+        return true
+    })
 
     return (
         <div className="container mx-auto p-4 max-w-2xl">
@@ -32,21 +90,92 @@ export default function AgendaPage() {
                     <CardTitle>Agenda</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleAddTask} className="flex gap-2">
+                    <form onSubmit={handleAddTask} className="space-y-4 mb-6">
                         <Input
                             value={newTask}
                             onChange={(e) => setNewTask(e.target.value)}
-                            placeholder="Add a new task..."
+                            placeholder="Task title..."
                             data-testid="task-input"
                         />
-                        <Button type="submit">Add</Button>
+                        <Textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Description (optional)"
+                        />
+                        <div className="flex gap-4">
+                            <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Priority" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="low">Low</SelectItem>
+                                    <SelectItem value="medium">Medium</SelectItem>
+                                    <SelectItem value="high">High</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <DatePicker date={dueDate} onSelect={setDueDate} />
+                            <Button type="submit">
+                                <PlusCircle className="mr-2" />
+                                Add
+                            </Button>
+                        </div>
                     </form>
 
+                    <Tabs defaultValue="all" className="w-full" onValueChange={setFilter}>
+                        <TabsList className="grid grid-cols-5 w-full">
+                            <TabsTrigger value="all">All</TabsTrigger>
+                            <TabsTrigger value="active">Active</TabsTrigger>
+                            <TabsTrigger value="completed">Completed</TabsTrigger>
+                            <TabsTrigger value="high">High Priority</TabsTrigger>
+                            <TabsTrigger value="due-soon">Due Soon</TabsTrigger>
+                        </TabsList>
+                    </Tabs>
+
                     <div className="mt-4 space-y-2">
-                        {tasks.map(task => (
-                            <Card key={task.id}>
+                        {filteredTasks.map(task => (
+                            <Card key={task.id} className={task.completed ? 'opacity-60' : ''}>
                                 <CardContent className="p-4">
-                                    {task.title}
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-start gap-3">
+                                            <button
+                                                onClick={() => toggleTaskCompletion(task.id)}
+                                                className="text-primary hover:text-primary/80 mt-1"
+                                                aria-label="Toggle task completion"
+                                            >
+                                                {task.completed ? <CheckCircle2 /> : <Circle />}
+                                            </button>
+                                            <div className="space-y-1">
+                                                <span className={task.completed ? 'line-through' : ''}>
+                                                    {task.title}
+                                                </span>
+                                                {task.description && (
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {task.description}
+                                                    </p>
+                                                )}
+                                                <div className="flex gap-2">
+                                                    <Badge variant="outline" className={getPriorityColor(task.priority)}>
+                                                        {task.priority}
+                                                    </Badge>
+                                                    {task.dueDate && (
+                                                        <Badge variant="outline">
+                                                            <Calendar className="mr-1 h-3 w-3" />
+                                                            {new Date(task.dueDate).toLocaleDateString()}
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => deleteTask(task.id)}
+                                            className="text-destructive hover:text-destructive/80"
+                                            aria-label="Delete task"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
                                 </CardContent>
                             </Card>
                         ))}
