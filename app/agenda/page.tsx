@@ -170,10 +170,10 @@ export default function AgendaPage() {
                                             variant="ghost"
                                             size="icon"
                                             onClick={() => deleteTask(task.id)}
-                                            className="text-destructive hover:text-destructive/80"
+                                            className="text-destructive hover:text-destructive/90 hover:bg-destructive/10 transition-colors"
                                             aria-label="Delete task"
                                         >
-                                            <Trash2 className="h-4 w-4" />
+                                            <Trash2 className={'!w-6 !h-6'} />
                                         </Button>
                                     </div>
                                 </CardContent>
