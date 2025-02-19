@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Fx64b/m324-agenda/compare/v1.2.0...v1.3.0) (2025-02-19)
+
+
+### Features
+
+* **agenda:** implement core task management features ([328a0ac](https://github.com/Fx64b/m324-agenda/commit/328a0acfc890a0395087a57d6f377fbfe0a427c1))
+
 # [1.2.0](https://github.com/Fx64b/m324-agenda/compare/v1.1.0...v1.2.0) (2025-02-19)
 
 
