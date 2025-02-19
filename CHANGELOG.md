@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/Fx64b/m324-agenda/compare/v1.3.1...v1.3.2) (2025-02-19)
+
+
+### Bug Fixes
+
+* **agenda:** trash icon size is too small ([c216256](https://github.com/Fx64b/m324-agenda/commit/c216256207729a86558fa502e685872df7070caa))
+
 ## [1.3.1](https://github.com/Fx64b/m324-agenda/compare/v1.3.0...v1.3.1) (2025-02-19)
 
 
