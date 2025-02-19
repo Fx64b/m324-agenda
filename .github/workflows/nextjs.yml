@@ -52,7 +52,7 @@ jobs:
           static_site_generator: next
 
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
+        run: npm i
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
