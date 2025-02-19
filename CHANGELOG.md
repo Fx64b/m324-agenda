@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Fx64b/m324-agenda/compare/v1.1.0...v1.2.0) (2025-02-19)
+
+
+### Features
+
+* **ui:** add necessary radix ui dependencies for new components ([f86e8ca](https://github.com/Fx64b/m324-agenda/commit/f86e8ca610b4caee7aeba2e3bbc3f68c1e3ee679))
+
 # [1.1.0](https://github.com/Fx64b/m324-agenda/compare/v1.0.0...v1.1.0) (2025-02-19)
 
 
