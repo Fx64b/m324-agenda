@@ -86,7 +86,7 @@ export default function CalendarPage() {
                         <Button
                             variant="outline"
                             size="icon"
-                            aria-label="Next month"
+                            aria-label="Go to agenda view"
                         >
                         <ListTodo />
                         </Button>
@@ -113,6 +113,7 @@ export default function CalendarPage() {
                             return (
                                 <div
                                     key={index}
+                                    data-testid="day-cell"
                                     className={`min-h-[150px] p-2 bg-background ${
                                         !isCurrentMonth ? 'opacity-50' : ''
                                     }`}

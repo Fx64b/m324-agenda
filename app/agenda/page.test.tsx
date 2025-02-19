@@ -1,8 +1,30 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import AgendaPage from './page'
 
+// Mock localStorage
+const localStorageMock = (() => {
+    let store: { [key: string]: string } = {}
+    return {
+        getItem: (key: string) => store[key] || null,
+        setItem: (key: string, value: string) => {
+            store[key] = value.toString()
+        },
+        clear: () => {
+            store = {}
+        }
+    }
+})()
+
+Object.defineProperty(window, 'localStorage', {
+    value: localStorageMock
+})
+
 describe('AgendaPage', () => {
+    beforeEach(() => {
+        localStorageMock.clear()
+    })
+
     describe('Task Creation', () => {
         it('adds a new task with basic information', () => {
             render(<AgendaPage />)
