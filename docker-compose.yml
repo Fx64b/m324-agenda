@@ -1,8 +1,8 @@
 services:
-  web:
-    build:
-      context: .
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
+    web:
+        build:
+            context: .
+        ports:
+            - '3000:3000'
+        environment:
+            - NODE_ENV=production

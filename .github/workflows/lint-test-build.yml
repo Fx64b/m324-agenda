@@ -9,6 +9,7 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+        name: Build and Test
 
         steps:
             - uses: actions/checkout@v4
@@ -32,5 +33,28 @@ jobs:
             - name: Run tests
               run: pnpm test
 
-            - name: Build
+            - name: Build App
               run: pnpm build
+
+    docker:
+        runs-on: ubuntu-latest
+        name: Docker Build
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build Docker image
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  push: false
+                  load: true
+                  tags: m324-agenda:test
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+
+            - name: Validate Docker Compose
+              run: docker compose config
