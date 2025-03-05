@@ -1,4 +1,3 @@
-// app/calendar/page.tsx
 'use client'
 
 import { useTasks } from '@/hook/useTasks'
@@ -22,8 +21,6 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-// app/calendar/page.tsx
 
 export default function CalendarPage() {
     const { tasks } = useTasks()
