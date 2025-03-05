@@ -66,6 +66,7 @@ pnpm start       # Start production server
 pnpm lint        # Run ESLint
 pnpm test        # Run tests
 pnpm test:watch  # Run tests in watch mode
+pnpm test:e2e    # Run end-to-end tests (requires Firefox)
 ```
 
 ### Testing
@@ -76,6 +77,14 @@ To run tests:
 ```bash
 pnpm test
 ```
+
+For End-to-End tests, playwright is used. Firefox is required to run E2E tests:
+
+```bash
+pnpm test:e2e
+```
+
+```bash
 
 ### Deployment
 
