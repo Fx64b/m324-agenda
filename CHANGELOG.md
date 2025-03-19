@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/Fx64b/m324-agenda/compare/v1.5.0...v1.5.1) (2025-03-19)
+
+
+### Bug Fixes
+
+* **README:** minor changes and improvements ([2e2f214](https://github.com/Fx64b/m324-agenda/commit/2e2f214d6a347f61adfb27dbc982426551968a6c))
+
 # [1.5.0](https://github.com/Fx64b/m324-agenda/compare/v1.4.0...v1.5.0) (2025-02-19)
 
 ### Features
