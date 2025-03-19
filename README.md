@@ -46,7 +46,7 @@ cd m324-agenda
 2. Install dependencies
 
 ```bash
-pnpm install
+pnpm i
 ```
 
 3. Run the development server:
@@ -84,16 +84,6 @@ For End-to-End tests, playwright is used. Firefox is required to run E2E tests:
 pnpm test:e2e
 ```
 
-```bash
-
 ### Deployment
 
 The project is configured for deployment on Vercel or GitHub Pages. The main branch is automatically deployed through GitHub Actions.
-Contributing
-
-### Fork the repository
-
-- Create your feature branch (git checkout -b feature/amazing-feature)
-- Commit your changes using conventional commits
-- Push to the branch (git push origin feature/amazing-feature)
-- Open a Pull Request
